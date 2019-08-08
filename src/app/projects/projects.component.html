@@ -1,0 +1,111 @@
+<div class="proOuter">
+  <h2>Projects</h2>
+  <div>
+
+    <table mat-table
+           id="tablePro"
+           [dataSource]="proData">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell
+            *matHeaderCellDef> Id </th>
+        <td mat-cell
+            *matCellDef="let element">{{element.id}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell
+            *matHeaderCellDef> Name </th>
+        <td mat-cell
+            *matCellDef="let element"> <input type="text"
+                 [value]="element.name"
+                 [(ngModel)]="element.name"
+                 (change)="updateProject(element, $event.target)" /> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="teamSize">
+        <th mat-header-cell
+            *matHeaderCellDef> Team Size </th>
+        <td mat-cell
+            *matCellDef="let element">{{element.teamSize}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="clientName">
+        <th mat-header-cell
+            *matHeaderCellDef> Client Name </th>
+        <td mat-cell
+            *matCellDef="let element"> <input type="text"
+                 [value]="element.clientName"
+                 [(ngModel)]="element.clientName"
+                 (change)="updateProject(element)" /> </td>
+      </ng-container>
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell
+            *matHeaderCellDef> Delete </th>
+        <td mat-cell
+            *matCellDef="let element">
+          <button mat-button
+                  (click)="deleteProject(element)">
+            <mat-icon>close</mat-icon>
+          </button> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell
+            *matHeaderCellDef> Edit </th>
+        <td mat-cell
+            *matCellDef="let element">
+          <button mat-button
+                  (click)="editProject(element)">
+            <mat-icon>edit</mat-icon>
+          </button> </td>
+      </ng-container>
+
+      <tr mat-header-row
+          *matHeaderRowDef="displayedProjectColumns"></tr>
+      <tr mat-row
+          *matRowDef="let row; columns: displayedProjectColumns;"></tr>
+    </table>
+
+    <h3>Add new Project:</h3>
+    <form [formGroup]="addForm">
+      <mat-form-field>
+        <input matInput
+               placeholder="Name"
+               name="name"
+               formControlName='name' />
+      </mat-form-field>
+      <mat-form-field><input matInput
+               placeholder="ClientName"
+               name='clientName'
+               formControlName='clientName' /></mat-form-field>
+      <button mat-button
+              (click)="addProject()"
+              [disabled]="!addForm.valid">
+        <mat-icon>add</mat-icon>
+      </button>
+    </form>
+
+    <div class="edit"
+         *ngIf="editing">
+      <h3>Edit Project:</h3>
+      <form [formGroup]="updateForm">
+        <mat-form-field>
+          <input matInput
+                 placeholder="Name"
+                 name="name"
+                 formControlName='name' />
+        </mat-form-field>
+        <mat-form-field><input matInput
+                 placeholder="ClientName"
+                 name='clientName'
+                 formControlName='clientName' /></mat-form-field>
+        <button mat-button
+                (click)="saveProject()"
+                [disabled]="!updateForm.valid">
+          <mat-icon>check</mat-icon>
+        </button>
+      </form>
+    </div>
+  </div>
+  <span *ngIf="tableUpdated">{{feedbackMessage}}</span>
+</div>

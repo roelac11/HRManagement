@@ -1,0 +1,25 @@
+<div class="login">
+  <form [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()">
+    User:
+    <mat-form-field>
+      <input matInput
+             type="text"
+             formControlName="username"
+             name="username">
+    </mat-form-field><br />
+    Password:
+    <mat-form-field>
+      <input matInput
+             type="password"
+             formControlName="password"
+             name="password">
+    </mat-form-field><br /><br />
+
+    <button mat-raised-button
+            type="submit"
+            [disabled]="!loginForm.valid">Login</button>
+    <br /><span *ngIf="loginError"
+          style="color:red">Username or Password is incorrect!</span>
+  </form>
+</div>

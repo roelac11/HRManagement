@@ -1,0 +1,30 @@
+<mat-sidenav-container>
+  <mat-sidenav #sidenav
+               mode="side"
+               [(opened)]="opened">
+    <p><button mat-button
+              (click)="sidenav.toggle()">
+        <mat-icon>close</mat-icon>
+      </button></p>
+    <button mat-button
+            (click)="showEmployees()">Employees</button><br />
+    <button mat-button
+            (click)="showProjects()">Projects</button><br />
+    <button mat-button
+            (click)="logout()">Logout</button><br />
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div style="min-height: 500px">
+      <p>
+        <button mat-button
+                *ngIf="!opened"
+                (click)="sidenav.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </p>
+      <router-outlet></router-outlet>
+    </div>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>
