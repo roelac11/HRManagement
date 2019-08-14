@@ -16,7 +16,8 @@
              name="password">
     </mat-form-field><br /><br />
 
-    <button mat-raised-button
+    <button mat-fab
+            color="primary"
             type="submit"
             [disabled]="!loginForm.valid">Login</button>
     <br /><span *ngIf="loginError"

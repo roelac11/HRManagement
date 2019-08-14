@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     MatIconModule,
+    MatButtonModule,
     RouterModule.forChild([{ path: '', component: StartComponent }]),
   ],
   exports: [StartComponent],
