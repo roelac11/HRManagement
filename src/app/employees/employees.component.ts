@@ -11,8 +11,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./employees.component.scss'],
 })
 export class EmployeesComponent implements OnInit {
-  empData: Employee[];
-  proData: Project[];
+  employeeData: Employee[];
+  projectData: Project[];
   displayedEmployeeColumns: string[] = [
     'id',
     'name',
@@ -28,7 +28,6 @@ export class EmployeesComponent implements OnInit {
   updateForm: FormGroup;
 
   feedbackMessage = '';
-  tableUpdated = false;
   selectedProjectId: number;
   editing = false;
 
@@ -58,6 +57,7 @@ export class EmployeesComponent implements OnInit {
     this.updateTeamSizes();
     this.loadProjectData();
     this.loadEmployeeData();
+    this.feedbackMessage = '';
   }
 
   addEmployee() {
@@ -79,7 +79,6 @@ export class EmployeesComponent implements OnInit {
     this.loadProjectData();
 
     this.feedbackMessage = 'New user ' + this.addForm.get('name').value + ' added!';
-    this.tableUpdated = true;
     this.resetInputFields();
   }
 
@@ -89,7 +88,7 @@ export class EmployeesComponent implements OnInit {
       company: '',
       birthday: '',
       favoriteColor: '',
-      projectId: '',
+      projectId: 0,
     });
   }
 
@@ -98,31 +97,20 @@ export class EmployeesComponent implements OnInit {
     this.updateTeamSizes();
     this.loadEmployeeData();
     this.loadProjectData();
-
-    this.tableUpdated = true;
     this.feedbackMessage = 'Employee ' + this.addForm.get('name').value + ' deleted!';
   }
 
   editEmployee(element: Employee) {
     this.editing = true;
+    this.feedbackMessage = '';
 
-    if (!element.projectId) {
-      this.updateForm.setValue({
-        id: element.id,
-        name: element.name,
-        company: element.company,
-        favoriteColor: element.favoriteColor,
-        projectId: '',
-      });
-    } else {
-      this.updateForm.setValue({
-        id: element.id,
-        name: element.name,
-        company: element.company,
-        favoriteColor: element.favoriteColor,
-        projectId: element.projectId,
-      });
-    }
+    this.updateForm.setValue({
+      id: element.id,
+      name: element.name,
+      company: element.company,
+      favoriteColor: element.favoriteColor,
+      projectId: element.projectId ? element.projectId : 0,
+    });
 
     this.updateForm.get('id').disable();
   }
@@ -138,7 +126,7 @@ export class EmployeesComponent implements OnInit {
       id,
       name: newName,
       company: newCompany,
-      birthday: this.empData.filter((emp) => emp.id === id)[0].birthday,
+      birthday: this.employeeData.filter((emp) => emp.id === id)[0].birthday,
       favoriteColor: newFavoriteColor,
       projectId: newProject,
     };
@@ -149,7 +137,6 @@ export class EmployeesComponent implements OnInit {
     this.loadProjectData();
     this.editing = false;
 
-    this.tableUpdated = true;
     this.feedbackMessage = 'Employee ' + newElement.name + ' updated!';
   }
 
@@ -158,11 +145,11 @@ export class EmployeesComponent implements OnInit {
   }
 
   loadProjectData() {
-    this.proData = [...this.dataService.getProjectData()];
+    this.projectData = [...this.dataService.getProjectData()];
   }
 
   loadEmployeeData() {
-    this.empData = [...this.dataService.getEmployeeData()];
+    this.employeeData = [...this.dataService.getEmployeeData()];
   }
 
   getAge(birthday: Date): number {

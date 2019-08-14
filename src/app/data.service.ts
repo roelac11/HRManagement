@@ -2,7 +2,7 @@ import { Employee } from './employees.interface';
 import { Project } from './projects.interface';
 import { Injectable } from '@angular/core';
 
-let PROJECT_DATA: Project[] = [
+let projectData: Project[] = [
   {
     id: 1,
     name: 'interns',
@@ -17,7 +17,7 @@ let PROJECT_DATA: Project[] = [
   },
 ];
 
-let EMPLOYEE_DATA: Employee[] = [
+let employeeData: Employee[] = [
   {
     id: 1,
     name: 'gwen',
@@ -40,6 +40,7 @@ let EMPLOYEE_DATA: Employee[] = [
     company: 'parkside',
     birthday: new Date('10.03.1997'),
     favoriteColor: 'red',
+    projectId: 0,
   },
 ];
 
@@ -52,50 +53,50 @@ export class DataService {
   constructor() {}
 
   getEmployeeData(): Employee[] {
-    return EMPLOYEE_DATA;
+    return employeeData;
   }
 
   getProjectData(): Project[] {
-    return PROJECT_DATA;
+    return projectData;
   }
 
   addEmployee(newEmployee: Employee) {
     newEmployee.id = this.nextEmpId;
     this.nextEmpId++;
-    EMPLOYEE_DATA.push(newEmployee);
+    employeeData.push(newEmployee);
   }
 
   addProject(newProject: Project) {
     newProject.id = this.nextProId;
     this.nextProId++;
-    PROJECT_DATA.push(newProject);
+    projectData.push(newProject);
   }
 
   removeEmployee(employee: Employee) {
-    EMPLOYEE_DATA = EMPLOYEE_DATA.filter((item) => item.id !== employee.id);
+    employeeData = employeeData.filter((item) => item.id !== employee.id);
   }
 
   removeProject(project: Project) {
-    PROJECT_DATA = PROJECT_DATA.filter((item) => item.id !== project.id);
+    projectData = projectData.filter((item) => item.id !== project.id);
     this.updateEmployeeProjects();
   }
 
   updateEmployee(employee: Employee) {
-    EMPLOYEE_DATA = EMPLOYEE_DATA.filter((item) => item.id !== employee.id);
-    EMPLOYEE_DATA.push(employee);
-    EMPLOYEE_DATA.sort((e1, e2) => (e1.id > e2.id ? 0 : -1));
+    employeeData = employeeData.filter((item) => item.id !== employee.id);
+    employeeData.push(employee);
+    employeeData.sort((e1, e2) => (e1.id > e2.id ? 0 : -1));
   }
 
   updateProject(project: Project) {
-    PROJECT_DATA = PROJECT_DATA.filter((item) => item.id !== project.id);
-    PROJECT_DATA.push(project);
-    PROJECT_DATA.sort((p1, p2) => (p1.id > p2.id ? 0 : -1));
+    projectData = projectData.filter((item) => item.id !== project.id);
+    projectData.push(project);
+    projectData.sort((p1, p2) => (p1.id > p2.id ? 0 : -1));
   }
 
   updateTeamSizes() {
-    for (const project of PROJECT_DATA) {
+    for (const project of projectData) {
       project.teamSize = 0;
-      for (const employee of EMPLOYEE_DATA) {
+      for (const employee of employeeData) {
         if (employee.projectId) {
           if (project.id === employee.projectId) {
             project.teamSize++;
@@ -107,13 +108,13 @@ export class DataService {
   }
 
   getProjectById(id: number): Project {
-    return PROJECT_DATA.filter((item) => item.id === id)[0];
+    return projectData.filter((item) => item.id === id)[0];
   }
 
   updateEmployeeProjects() {
-    for (const employee of EMPLOYEE_DATA) {
+    for (const employee of employeeData) {
       if (employee.projectId) {
-        if (PROJECT_DATA.filter((item) => item.id === employee.projectId).length === 0) {
+        if (projectData.filter((item) => item.id === employee.projectId).length === 0) {
           employee.projectId = 0;
         }
       }

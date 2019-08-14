@@ -4,7 +4,7 @@
 
     <table mat-table
            id="tablePro"
-           [dataSource]="proData">
+           [dataSource]="projectData">
       <ng-container matColumnDef="id">
         <th mat-header-cell
             *matHeaderCellDef> Id </th>
@@ -107,5 +107,5 @@
       </form>
     </div>
   </div>
-  <span *ngIf="tableUpdated">{{feedbackMessage}}</span>
+  <span>{{feedbackMessage}}</span>
 </div>

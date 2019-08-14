@@ -3,7 +3,7 @@
   <div>
     <table mat-table
            id='tableEmp'
-           [dataSource]="empData">
+           [dataSource]="employeeData">
       <ng-container matColumnDef="id">
         <th mat-header-cell
             *matHeaderCellDef> Id </th>
@@ -85,7 +85,6 @@
           *matRowDef="let row; columns: displayedEmployeeColumns;"></tr>
     </table>
 
-
     <h3>Add new Project:</h3>
     <form [formGroup]="addForm">
       <mat-form-field>
@@ -112,7 +111,7 @@
         <mat-label>Project</mat-label>
         <mat-select formControlName='projectId'
                     name="project">
-          <mat-option *ngFor="let p of proData"
+          <mat-option *ngFor="let p of projectData"
                       [value]="p.id">
             {{p.name}}
           </mat-option>
@@ -154,7 +153,7 @@
           <mat-label>Project</mat-label>
           <mat-select formControlName='projectId'
                       name="project">
-            <mat-option *ngFor="let p of proData"
+            <mat-option *ngFor="let p of projectData"
                         [value]="p.id">
               {{p.name}}
             </mat-option>
@@ -167,7 +166,6 @@
         </button>
       </form>
     </div>
-
-    <span *ngIf="tableUpdated">{{feedbackMessage}}</span>
+    <span>{{feedbackMessage}}</span>
   </div>
 </div>
