@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
       this.loginForm.get('password').value === 'password'
     ) {
       localStorage.setItem('loggedIn', 'true');
-      console.log('loginComponent... ' + localStorage.getItem('loggedIn'));
+      // console.log('loginComponent... ' + localStorage.getItem('loggedIn'));
       this.loginError = false;
 
       this.router.navigateByUrl('/main');

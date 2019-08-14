@@ -16,11 +16,7 @@
         <th mat-header-cell
             *matHeaderCellDef> Name </th>
         <td mat-cell
-            *matCellDef="let element">
-          <input type="text"
-                 [value]="element.name"
-                 [(ngModel)]="element.name"
-                 (change)="updateEmployee(element)" />
+            *matCellDef="let element">{{element.name}}
         </td>
       </ng-container>
 
@@ -28,10 +24,7 @@
         <th mat-header-cell
             *matHeaderCellDef> Company </th>
         <td mat-cell
-            *matCellDef="let element"> <input type="text"
-                 [value]="element.company"
-                 [(ngModel)]="element.company"
-                 (change)="updateEmployee(element)" /> </td>
+            *matCellDef="let element"> {{element.company}}</td>
       </ng-container>
 
       <ng-container matColumnDef="age">
@@ -52,31 +45,17 @@
         <th mat-header-cell
             *matHeaderCellDef> Favorite Color </th>
         <td mat-cell
-            *matCellDef="let element"> <input type="text"
-                 [value]="element.favoriteColor"
-                 [(ngModel)]="element.favoriteColor"
-                 (change)="updateEmployee(element)" /></td>
+            *matCellDef="let element"> {{element.favoriteColor}}</td>
       </ng-container>
 
-      <ng-container matColumnDef="project">
+      <ng-container matColumnDef="projectId">
         <th mat-header-cell
             *matHeaderCellDef> Project </th>
         <td mat-cell
             *matCellDef="let element">
 
-          <mat-form-field>
-            <mat-label>Project</mat-label>
-            <mat-select (selectionChange)="updateEmployee(element)"
-                        [(ngModel)]="element.project">
-              <div *ngFor="let p of proData">
-                <mat-option [value]="p"
-                            selected='true'>
-                  {{p.name}}
-                </mat-option>
-              </div>
-            </mat-select>
-          </mat-form-field>
-
+          <p *ngIf="!element.projectId || element.projectId === 0">-</p>
+          <p *ngIf="element.projectId">{{getProjectById(element.projectId).name}}</p>
         </td>
       </ng-container>
       <ng-container matColumnDef="delete">
@@ -87,6 +66,16 @@
           <button mat-button
                   (click)="deleteEmployee(element)">
             <mat-icon>close</mat-icon>
+          </button> </td>
+      </ng-container>
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell
+            *matHeaderCellDef> Edit </th>
+        <td mat-cell
+            *matCellDef="let element">
+          <button mat-button
+                  (click)="editEmployee(element)">
+            <mat-icon>edit</mat-icon>
           </button> </td>
       </ng-container>
 
@@ -121,10 +110,10 @@
                formControlName='favoriteColor' /></mat-form-field>
       <mat-form-field>
         <mat-label>Project</mat-label>
-        <mat-select formControlName='project'
+        <mat-select formControlName='projectId'
                     name="project">
           <mat-option *ngFor="let p of proData"
-                      [value]="p">
+                      [value]="p.id">
             {{p.name}}
           </mat-option>
         </mat-select>
@@ -136,6 +125,49 @@
         <mat-icon>add</mat-icon>
       </button>
     </form>
+
+    <div class="edit"
+         *ngIf="editing">
+      <h3>Edit Employee:</h3>
+      <form [formGroup]="updateForm">
+        <mat-form-field>
+          <input matInput
+                 name="id"
+                 placeholder="Id"
+                 formControlName='id' />
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput
+                 placeholder="Name"
+                 name="name"
+                 formControlName='name' />
+        </mat-form-field>
+        <mat-form-field><input matInput
+                 placeholder="Company"
+                 name='company'
+                 formControlName='company' /></mat-form-field>
+        <mat-form-field><input matInput
+                 placeholder="Favorite Color"
+                 name='favoriteColor'
+                 formControlName='favoriteColor' /></mat-form-field>
+        <mat-form-field>
+          <mat-label>Project</mat-label>
+          <mat-select formControlName='projectId'
+                      name="project">
+            <mat-option *ngFor="let p of proData"
+                        [value]="p.id">
+              {{p.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-button
+                (click)="updateEmployee()"
+                [disabled]="!updateForm.valid">
+          <mat-icon>check</mat-icon>
+        </button>
+      </form>
+    </div>
+
     <span *ngIf="tableUpdated">{{feedbackMessage}}</span>
   </div>
 </div>

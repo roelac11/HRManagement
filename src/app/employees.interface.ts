@@ -6,5 +6,5 @@ export interface Employee {
   company: string;
   birthday: Date;
   favoriteColor?: string;
-  project?: Project;
+  projectId?: number;
 }

@@ -36,6 +36,7 @@ export class ProjectsComponent implements OnInit {
     });
 
     this.updateForm = this.fb.group({
+      id: ['', [Validators.required]],
       name: ['', [Validators.required]],
       clientName: ['', [Validators.required]],
     });
@@ -55,6 +56,7 @@ export class ProjectsComponent implements OnInit {
 
     this.dataService.addProject(newProject);
     this.loadProjectData();
+
     this.feedbackMessage = 'New project ' + this.addForm.get('name').value + ' added!';
     this.tableUpdated = true;
     this.resetInputFields();
@@ -71,21 +73,25 @@ export class ProjectsComponent implements OnInit {
     this.feedbackMessage = 'Project ' + this.addForm.get('name').value + ' deleted!';
   }
 
-  updateProject(element: Project, target) {
-    if (!element.name.trim()) {
-      console.log('empty field');
-      this.loadProjectData();
+  updateProject() {
+    const id = this.updateForm.get('id').value;
+    const newName = this.updateForm.get('name').value;
+    const newClientName = this.updateForm.get('clientName').value;
 
-      console.log(this.proData.filter((item) => item.id === element.id)[0]);
+    const newElement = {
+      id,
+      name: newName,
+      teamSize: 0,
+      clientName: newClientName,
+    };
 
-      this.tableUpdated = true;
-      this.feedbackMessage = 'Project ' + element.name + ' couldnt be updated!';
-    } else {
-      this.dataService.updateProject(element);
-      this.loadProjectData();
-      this.tableUpdated = true;
-      this.feedbackMessage = 'Project ' + element.name + ' updated!';
-    }
+    this.dataService.updateProject(newElement);
+    this.updateTeamSizes();
+    this.loadProjectData();
+    this.editing = false;
+
+    this.tableUpdated = true;
+    this.feedbackMessage = 'Project ' + newElement.name + ' updated!';
   }
 
   updateTeamSizes() {
@@ -98,10 +104,11 @@ export class ProjectsComponent implements OnInit {
 
   editProject(element: Project) {
     this.editing = true;
-    this.updateForm.setValue({ name: element.name, clientName: element.clientName });
-  }
-
-  saveProject() {
-    this.editing = false;
+    this.updateForm.setValue({
+      id: element.id,
+      name: element.name,
+      clientName: element.clientName,
+    });
+    this.updateForm.get('id').disable();
   }
 }

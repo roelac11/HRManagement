@@ -24,7 +24,7 @@ let EMPLOYEE_DATA: Employee[] = [
     company: 'parkside',
     birthday: new Date('01.01.1997'),
     favoriteColor: 'yellow',
-    project: PROJECT_DATA[0],
+    projectId: 1,
   },
   {
     id: 2,
@@ -32,7 +32,7 @@ let EMPLOYEE_DATA: Employee[] = [
     company: 'parkside',
     birthday: new Date('08.07.1997'),
     favoriteColor: 'green',
-    project: PROJECT_DATA[0],
+    projectId: 1,
   },
   {
     id: 3,
@@ -77,6 +77,7 @@ export class DataService {
 
   removeProject(project: Project) {
     PROJECT_DATA = PROJECT_DATA.filter((item) => item.id !== project.id);
+    this.updateEmployeeProjects();
   }
 
   updateEmployee(employee: Employee) {
@@ -95,13 +96,27 @@ export class DataService {
     for (const project of PROJECT_DATA) {
       project.teamSize = 0;
       for (const employee of EMPLOYEE_DATA) {
-        if (employee.project) {
-          if (project.id === employee.project.id) {
+        if (employee.projectId) {
+          if (project.id === employee.projectId) {
             project.teamSize++;
           }
         }
       }
       this.updateProject(project);
+    }
+  }
+
+  getProjectById(id: number): Project {
+    return PROJECT_DATA.filter((item) => item.id === id)[0];
+  }
+
+  updateEmployeeProjects() {
+    for (const employee of EMPLOYEE_DATA) {
+      if (employee.projectId) {
+        if (PROJECT_DATA.filter((item) => item.id === employee.projectId).length === 0) {
+          employee.projectId = 0;
+        }
+      }
     }
   }
 }

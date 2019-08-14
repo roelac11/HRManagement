@@ -16,10 +16,7 @@
         <th mat-header-cell
             *matHeaderCellDef> Name </th>
         <td mat-cell
-            *matCellDef="let element"> <input type="text"
-                 [value]="element.name"
-                 [(ngModel)]="element.name"
-                 (change)="updateProject(element, $event.target)" /> </td>
+            *matCellDef="let element"> {{element.name}} </td>
       </ng-container>
 
       <ng-container matColumnDef="teamSize">
@@ -33,10 +30,7 @@
         <th mat-header-cell
             *matHeaderCellDef> Client Name </th>
         <td mat-cell
-            *matCellDef="let element"> <input type="text"
-                 [value]="element.clientName"
-                 [(ngModel)]="element.clientName"
-                 (change)="updateProject(element)" /> </td>
+            *matCellDef="let element"> {{element.clientName}} </td>
       </ng-container>
       <ng-container matColumnDef="delete">
         <th mat-header-cell
@@ -91,6 +85,12 @@
       <form [formGroup]="updateForm">
         <mat-form-field>
           <input matInput
+                 name="id"
+                 placeholder="Id"
+                 formControlName='id' />
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput
                  placeholder="Name"
                  name="name"
                  formControlName='name' />
@@ -100,7 +100,7 @@
                  name='clientName'
                  formControlName='clientName' /></mat-form-field>
         <button mat-button
-                (click)="saveProject()"
+                (click)="updateProject()"
                 [disabled]="!updateForm.valid">
           <mat-icon>check</mat-icon>
         </button>

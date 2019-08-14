@@ -11,12 +11,10 @@ export class StartComponent implements OnInit {
 
   ngOnInit() {}
   showEmployees() {
-    console.log('navigating to employees...');
     this.router.navigateByUrl('employees');
   }
 
   showProjects() {
-    console.log('navigating to projects...');
     this.router.navigateByUrl('projects');
   }
 }
